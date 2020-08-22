@@ -17,16 +17,30 @@ def generetor(num):
         list.append(random.choice(lines))
     for i in range(num):
         list[i] = list[i].title()
-    print(list)
+    #print(list)
 
-def helloCallBack():
-    generetor(3)
+def call():
+    generetor(int(combobox.get()))
     tmp = ""
     tmp = tmp.join(list)
-    print(tmp)
+    if CheckVar1.get() == 1:
+        random.seed()
+        if (random.randrange(0, 2)) == 1:
+            tmp = tmp + str(random.randrange(0, 101))
+        else:
+            tmp = str(random.randrange(0, 101)) + tmp
+    #print(tmp)
+    t.configure(state='normal')
+    t.delete("1.0","end")
+    t.insert('end', tmp)
+    t.configure(state='disabled')
+
+def copy():
+    finestra.clipboard_clear()
+    finestra.clipboard_append(t.get("0.1", "end"))
 
 finestra = tk.Tk()
-
+t = tk.Text(finestra, state='disabled', height=1, width=60)
 combobox = ttk.Combobox(finestra, state="readonly",
                             values=[
                                     "2", 
@@ -36,14 +50,15 @@ combobox = ttk.Combobox(finestra, state="readonly",
 
 combobox.current(0)
 
-B = tk.Button(finestra, text ="Hello", command = helloCallBack)
-label = tk.Label(text="Hello, Tkinter")
+bottoneGen = tk.Button(finestra, text ="Generate Password", command = call)
+bottoneCopy = tk.Button(finestra, text ="Copy to Clipboard", command = copy)
 CheckVar1 = IntVar()
-C1 = Checkbutton(finestra, text = "Numbers", variable = CheckVar1,\
-                    offvalue = 0, height=5, width = 20)
+C1 = Checkbutton(finestra, selectcolor = "black", text = "Numbers",
+                    variable = CheckVar1, offvalue = 0, height=5, width = 20)
 
-label.pack()
+t.pack()
 C1.pack()
 combobox.pack()
-B.pack()
+bottoneGen.pack()
+bottoneCopy.pack()
 finestra.mainloop()
